@@ -1,21 +1,21 @@
-# 📄 Tài liệu GPO: Corp - Deploy Python-3.4.3
+# 📄 GPO-03 Documentation: Corp - Deploy Python-3.4.3
 
-### 🎯 Mục tiêu
-Tự động hóa việc cài đặt phần mềm Python cho tất cả máy trạm mới và hiện có, đảm bảo mọi người dùng đều có công cụ cần thiết và giảm tải công việc cho đội IT.
+### 🎯 Objective
+To automate the installation of Python across all new and existing workstations, ensuring all users have the necessary tools while reducing the manual workload for the IT team.
 
-### 📋 Yêu cầu chuẩn bị
-1.  **File cài đặt:** Tải về `python-3.4.3.msi` (64-bit).
-2.  **Thư mục chia sẻ:** Tạo một thư mục chia sẻ trên server (ví dụ: `\\MT-DC01\Company_Software`).
-3.  **Phân quyền:** Cấp quyền `Read` cho nhóm `Authenticated Users` trên thư mục chia sẻ này.
-    `[Ảnh chụp màn hình tab Sharing của thư mục SoftwareDeployment]`
+### 📋 Prerequisites
+1.  **Installation File:** `python-3.4.3.msi` (64-bit) has been downloaded.
+2.  **Network Share:** A shared folder is created on the server (e.g., `\\MT-DC01\Company_Software`).
+3.  **Permissions:** The `Authenticated Users` group is granted `Read` permissions on the network share.
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-03-Deploy-Software/Company_Software-Sharing.png" alt="Share permissions for the Company_Software folder" width="800" />
 
-### ⚙️ Chi tiết cấu hình
--   **Đối tượng áp dụng:** Liên kết tới OU `MinhTam/Company/Computers`.
--   **Phương thức:** `Assigned` (Bắt buộc cài đặt).
-> **Đường dẫn:** `Computer Configuration\Policies\Software Settings\Software installation`
--   `[Ảnh chụp màn hình cửa sổ Software installation cho thấy gói Python đã được thêm]`
+### ⚙️ Configuration Details
+-   **Scope of Application:** Linked to the `MinhTam/Company/Computers` OU.
+-   **Deployment Method:** `Assigned` (Mandatory installation).
+> **Path:** `Computer Configuration\Policies\Software Settings\Software installation`
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-03-Deploy-Software/Software_Installation.png" alt="Python package added to Software Installation GPO" width="800" />
 
-### Kết quả xác thực
--   **Hành động:** Khởi động lại một máy trạm trong OU.
--   **Kết quả:** Sau khi đăng nhập, ứng dụng `Python File Manager` đã được cài đặt và sẵn sàng sử dụng trong Start Menu.
-    `[Ảnh chụp màn hình Start Menu của MT-CLIENT01 hiển thị ứng dụng Python]`
+### ✅ Validation Results
+-   **Action:** A workstation within the target OU was restarted.
+-   **Result:** After the user logged in, **Python (including IDLE)** was successfully installed and available for use in the Start Menu.
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-03-Deploy-Software/update.png" alt="Python successfully installed and visible in the Start Menu" width="800" />
