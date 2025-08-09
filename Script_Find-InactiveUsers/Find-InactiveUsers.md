@@ -22,7 +22,7 @@ To perform a periodic security audit by automatically scanning for and identifyi
     Minh Tam
 
 .DATE
-    08/09/2025
+    09/Aug/2025
 
 .NOTES
     Run this script with Administrator privileges on a machine with the AD Module installed (typically a Domain Controller).
