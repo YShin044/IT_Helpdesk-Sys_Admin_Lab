@@ -1,43 +1,43 @@
-# 📄 Tài liệu Script: Create-NewUsers.ps1
+# 📄 Script Documentation: Create New Users
 
-### 🎯 Chức năng
-Tự động hóa quy trình on-boarding nhân viên mới. Script đọc thông tin từ file CSV và tạo tài khoản Active Directory theo đúng chuẩn, giảm thiểu sai sót và tiết kiệm hàng giờ làm việc thủ công.
+### 🎯 Function
+This script streamlines the employee on-boarding process by programmatically generating standardized Active Directory accounts from a CSV file. It eliminates manual errors, ensures naming consistency, and saves significant administrative time.
 
-### 📋 Yêu cầu chuẩn bị
--   Một file `DanhSachNhanVien.csv` đặt cùng thư mục với script.
--   **Định dạng CSV:** `Ho,Ten,PhongBan` (Không có dòng tiêu đề).
--   **Ví dụ:**
+### 📋 Prerequisites
+-   A CSV file named `EmployeeList.csv` must be placed in the script's directory.
+-   **CSV Format**: The file **must** include a header row with the following column names: `FirstName`, `LastName`, `Department`.
+-   Example `EmployeeList.csv`:
     ```csv
-	Ho,Ten,PhongBan
-	Nguyen,Van An,Phong Kinh Doanh
-	Tran,Thi Binh,Phong Kinh Doanh
-	Le,Minh Cuong,Phong Kinh Doanh
-	Hoang,My Duyen,Phong Kinh Doanh
-	Pham,Thu Hang,Phong Ke Toan
-	Dang,Ngoc Lan,Phong Ke Toan
-	Bui,Tien Dung,Phong Ke Toan
-	Huynh,Thi Truc,Phong Ke Toan
-	Vu,Hoang Long,Phong Marketing
-	Mai,Anh Thu,Phong Marketing
-	Ho,Gia Huy,Phong Marketing
+    FirstName,LastName,Department
+    An,Nguyen Van,Phong Kinh Doanh
+    Binh,Tran Thi,Phong Kinh Doanh
+    Cuong,Le Minh,Phong Kinh Doanh
+    Duyen,Hoang My,Phong Kinh Doanh
+    Hang,Pham Thu,Phong Ke Toan
+    Lan,Dang Ngoc,Phong Ke Toan
+    Dung,Bui Tien,Phong Ke Toan
+    Truc,Huynh Thi,Phong Ke Toan
+    Long,Vu Hoang,Phong Marketing
+    Thu,Mai Anh,Phong Marketing
+    Huy,Ho Gia,Phong Marketing
     ```
 
-### 📜 Nội dung Script
+### 📜 Script
 ```powershell
 # =====================================================================================
 # Script Name:      Create-ADUsers-Robust.ps1 (Version 6.0 - Robust)
 # Author:           Nguyen Minh Tam
-# Date:             09/08/2025
-# Description:      Tự động tạo tài khoản AD.
-#                   - Kiểm tra xung đột cả sAMAccountName và Common Name (CN)
-#                   - Cung cấp cảnh báo chính xác cho từng loại xung đột.
+# Date:             09/Aug/2025
+# Description:      Automates AD account creation.
+#                   - Checks for both sAMAccountName and Common Name (CN) conflicts.
+#                   - Provides accurate warnings for each conflict type.
 # =====================================================================================
 
 #--------------------------------------------------------------------------------------
-# PHẦN 1: CẤU HÌNH BIẾN MÔI TRƯỜNG
+# PART 1: ENVIRONMENT CONFIGURATION
 #--------------------------------------------------------------------------------------
 
-$csvPath = "C:\_MinhTam\DanhSachNhanVien.csv"
+$csvPath = "C:\_MinhTam\EmployeeList.csv"
 $domainName = "minhtam.server"
 $defaultPassword = ConvertTo-SecureString "P@ssword123" -AsPlainText -Force
 $ouMapping = @{
@@ -48,38 +48,38 @@ $ouMapping = @{
 $specialLastNameClusters = @("ng", "nh", "tr", "ch", "th", "kh", "ph", "gh")
 
 #--------------------------------------------------------------------------------------
-# PHẦN 2: LOGIC CHÍNH - XỬ LÝ VÀ TẠO TÀI KHOẢN
+# PART 2: MAIN LOGIC - PROCESSING AND ACCOUNT CREATION
 #--------------------------------------------------------------------------------------
 Import-Csv -Path $csvPath | ForEach-Object {
-    $ho       = $_.Ho
-    $ten      = $_.Ten
-    $phongBan = $_.PhongBan
+    $firstName  = $_.FirstName
+    $lastName   = $_.LastName
+    $department = $_.Department
 
-    $fullName = "$ho $ten"
-    $cleanTen = $ten -replace '\s',''
-    $targetOU = $ouMapping[$phongBan]
+    $fullName = "$firstName $lastName"
+    $cleanLastName = $lastName -replace '\s',''
+    $targetOU = $ouMapping[$department]
 
-    # ... (Toàn bộ logic tạo $samAccountName giữ nguyên như trước)
-    $wordsInDept = $phongBan.Split(' '); if ($wordsInDept.Count -gt 1 -and $wordsInDept[0] -eq "Phong") { $phongBanPrefix = ($wordsInDept | Select-Object -Skip 1) -join "" } else { $phongBanPrefix = $phongBan -replace '\s','' }; $lastNameInitial = $ho.Substring(0, 1); foreach ($cluster in $specialLastNameClusters) { if ($ho.StartsWith($cluster, [System.StringComparison]::InvariantCultureIgnoreCase)) { $lastNameInitial = $cluster; break } }; $samAccountName = "$($phongBanPrefix).$($cleanTen)$($lastNameInitial)".ToLower(); if ($samAccountName.Length -gt 20) { Write-Warning "Ten '$samAccountName' (dai: $($samAccountName.Length)) vuot qua 20 ky tu. Tu dong cat."; $samAccountName = $samAccountName.Substring(0, 20); Write-Host "Ten moi: '$samAccountName'" -ForegroundColor Yellow }
+    # Dynamically generate the sAMAccountName based on department and name
+    $wordsInDept = $department.Split(' '); if ($wordsInDept.Count -gt 1 -and $wordsInDept -eq "Phong") { $deptPrefix = ($wordsInDept | Select-Object -Skip 1) -join "" } else { $deptPrefix = $department -replace '\s','' }; $firstNameInitial = $firstName.Substring(0, 1); foreach ($cluster in $specialLastNameClusters) { if ($firstName.StartsWith($cluster, [System.StringComparison]::InvariantCultureIgnoreCase)) { $firstNameInitial = $cluster; break } }; $samAccountName = "$($deptPrefix).$($cleanLastName)$($firstNameInitial)".ToLower(); if ($samAccountName.Length -gt 20) { Write-Warning "Username '$samAccountName' (length: $($samAccountName.Length)) exceeds 20 characters. Auto-truncating."; $samAccountName = $samAccountName.Substring(0, 20); Write-Host "New username: '$samAccountName'" -ForegroundColor Yellow }
     
     $userPrincipalName = "$samAccountName@$domainName"
     
     $samExists = Get-ADUser -Filter {SamAccountName -eq $samAccountName}
-    # Get-ADObject dùng để tìm bất kỳ loại đối tượng nào (user, group, contact) có trùng tên CN trong OU
+    # Use Get-ADObject to find any object type (user, group, contact) with a conflicting CN in the target OU
     $cnExists = Get-ADObject -Filter {Name -eq $fullName} -SearchBase $targetOU
 
     if ($samExists) {
-        Write-Warning "Bo qua: Ten dang nhap (sAMAccountName) '$samAccountName' da ton tai trong domain."
+        Write-Warning "Skipping: Login name (sAMAccountName) '$samAccountName' already exists in the domain."
     }
     elseif ($cnExists) {
-        Write-Warning "Bo qua: Ten hien thi (CN) '$fullName' da ton tai trong OU '$($targetOU.Split(',')[0])'."
+        Write-Warning "Skipping: Display Name (CN) '$fullName' already exists in the OU '$($targetOU.Split(','))'."
     }
     else {
-        # Chỉ khi cả hai đều không tồn tại, chúng ta mới tiến hành tạo
+        # Only proceed with creation if both checks pass
         try {
             New-ADUser -Name $fullName `
-                -GivenName $ho `
-                -Surname $ten `
+                -GivenName $firstName `
+                -Surname $lastName `
                 -SamAccountName $samAccountName `
                 -UserPrincipalName $userPrincipalName `
                 -AccountPassword $defaultPassword `
@@ -87,20 +87,32 @@ Import-Csv -Path $csvPath | ForEach-Object {
                 -Enabled $true `
                 -Path $targetOU
 
-            Write-Host "Da tao thanh cong tai khoan cho: $fullName ($samAccountName)" -ForegroundColor Green
+            Write-Host "Successfully created account for: $fullName ($samAccountName)" -ForegroundColor Green
         }
         catch {
-            Write-Error "Da xay ra loi khong xac dinh khi tao tai khoan '$samAccountName': $_"
+            Write-Error "An unexpected error occurred while creating account '$samAccountName': $_"
         }
     }
 }
-Write-Host "--- HOAN TAT QUA TRINH TU DONG HOA ---" -ForegroundColor Cyan ```
-#⚡ Hướng dẫn thực thi
-Mở PowerShell với quyền Administrator.
-Điều hướng tới thư mục script: cd C:\MinhTam\Scripts
-Chạy lệnh: .\Create-NewUsers.ps1
-✅ Kết quả kỳ vọng
-PowerShell hiển thị các thông báo thành công màu xanh lá cho mỗi tài khoản được tạo.
-Các tài khoản người dùng mới xuất hiện trong OU tương ứng trên Active Directory Users and Computers.
-[Ảnh chụp màn hình kết quả chạy script thành công trên PowerShell]
-[Ảnh chụp màn hình ADUC cho thấy các user mới đã nằm trong OU chính xác]
+Write-Host "--- AUTOMATION PROCESS COMPLETE ---" -ForegroundColor Cyan
+```
+
+### ⚡ Execution Guide
+1.  Run PowerShell as an Administrator.
+2.  Navigate to the script's directory: `cd C:\_MinhTam`
+3.  Execute the script: `.\Create-NewUsers.ps1`
+
+### ✅ Validation Results
+The script provides clear visual feedback for different scenarios.
+
+#### Scenario 1: Successful Creation
+When new users are created successfully from the CSV file, a green confirmation message is displayed for each account, confirming the action.
+
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/Script_Create-NewUsers/success.png" alt="Success messages in PowerShell for new user creation" width="800" />
+
+---
+
+#### Scenario 2: Conflict Detected (User Already Exists)
+If the script detects that a user already exists (either by `sAMAccountName` or `Common Name`), it will intelligently skip that entry and display a yellow warning message. This prevents the creation of duplicate accounts and informs the administrator of the conflict.
+
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/Script_Create-NewUsers/existed.png" alt="Warning message shown in PowerShell for an existing user" width="800" />
