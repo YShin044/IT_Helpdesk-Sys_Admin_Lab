@@ -13,9 +13,9 @@ Tự động hóa việc cài đặt phần mềm Python cho tất cả máy tr�
 -   **Đối tượng áp dụng:** Liên kết tới OU `MinhTam/Company/Computers`.
 -   **Phương thức:** `Assigned` (Bắt buộc cài đặt).
 > **Đường dẫn:** `Computer Configuration\Policies\Software Settings\Software installation`
--   `[Ảnh chụp màn hình cửa sổ Software installation cho thấy gói 7-Zip đã được thêm]`
+-   `[Ảnh chụp màn hình cửa sổ Software installation cho thấy gói Python đã được thêm]`
 
 ### Kết quả xác thực
 -   **Hành động:** Khởi động lại một máy trạm trong OU.
--   **Kết quả:** Sau khi đăng nhập, ứng dụng `7-Zip File Manager` đã được cài đặt và sẵn sàng sử dụng trong Start Menu.
-    `[Ảnh chụp màn hình Start Menu của MT-CLIENT01 hiển thị ứng dụng 7-Zip]`
+-   **Kết quả:** Sau khi đăng nhập, ứng dụng `Python File Manager` đã được cài đặt và sẵn sàng sử dụng trong Start Menu.
+    `[Ảnh chụp màn hình Start Menu của MT-CLIENT01 hiển thị ứng dụng Python]`
