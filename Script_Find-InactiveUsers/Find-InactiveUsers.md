@@ -1,42 +1,42 @@
-# 📄 Tài liệu Script: Find-InactiveUsers.ps1
+# 📄 Script Documentation: Find Inactive Users
 
-### 🎯 Chức năng
-Thực hiện kiểm toán bảo mật định kỳ bằng cách tự động quét và xác định các tài khoản người dùng không hoạt động (trên 90 ngày), sau đó xuất ra một báo cáo CSV chi tiết để quản trị viên có thể xem xét và xử lý.
+### 🎯 Objective
+To perform a periodic security audit by automatically scanning for and identifying user accounts that have been inactive for over 90 days. The script then exports a detailed CSV report for administrative review and action.
 
-### 📋 Yêu cầu chuẩn bị
--   Chạy script trên Domain Controller hoặc máy có cài đặt AD Module.
--   Thư mục `C:\_MinhTam\Reports` sẽ được tự động tạo nếu chưa tồn tại.
+### 📋 Prerequisites
+-   The script must be run on a Domain Controller or a machine with the Active Directory PowerShell Module installed.
+-   The `C:\_MinhTam\Reports` directory will be created automatically if it does not already exist.
 
-### 📜 Nội dung Script
+### 📜 Script Content
 ```powershell
 <#
 .SYNOPSIS
-    Tim kiem va xuat bao cao cac tai khoan nguoi dung khong hoat dong trong Active Directory.
+    Finds and exports a report of inactive user accounts in Active Directory.
 
 .DESCRIPTION
-    Script se tim tat ca cac tai khoan nguoi dung khong dang nhap trong mot khoang thoi gian
-    nhat dinh (mac dinh la 90 ngay).
-    Ket qua se duoc xuat ra mot file CSV de de dang xem va xu ly.
+    This script finds all user accounts that have not logged in within a specified
+    timeframe (default is 90 days). The results are exported to a CSV file
+    for easy review and processing.
 
 .AUTHOR
     Minh Tam
 
 .DATE
-    09/08/2025
+    08/09/2025
 
 .NOTES
-    Chạy script này với quyền Administrator trên một máy đã cài AD Module (thường là Domain Controller).
+    Run this script with Administrator privileges on a machine with the AD Module installed (typically a Domain Controller).
 #>
 
 #--------------------------------------------------------------------------------------
-# PHẦN CẤU HÌNH
+# CONFIGURATION SECTION
 #--------------------------------------------------------------------------------------
 
-# Số ngày được tính là không hoạt động
+# Number of days to be considered inactive
 $inactiveDays = 90
 
-# Đường dẫn và tên file báo cáo sẽ được xuất ra.
-# Script sẽ tự động tạo thư mục C:\Company\Reports nếu nó chưa tồn tại.
+# Path and filename for the exported report.
+# The script will auto-create the C:\_MinhTam\Reports directory if it doesn't exist.
 $reportFolder = "C:\_MinhTam\Reports"
 if (-not (Test-Path -Path $reportFolder)) {
     New-Item -ItemType Directory -Path $reportFolder
@@ -45,46 +45,55 @@ $reportPath = Join-Path -Path $reportFolder -ChildPath "Inactive_Users_Report_$(
 
 
 #--------------------------------------------------------------------------------------
-# PHẦN THỰC THI
+# EXECUTION SECTION
 #--------------------------------------------------------------------------------------
 
-Write-Host "Bat dau qua trinh tim kiem cac tai khoan khong hoat dong..." -ForegroundColor Cyan
+Write-Host "Starting the search for inactive accounts..." -ForegroundColor Cyan
 
 try {
-    # 1. Tim kiem cac tai khoan khong hoat dong.
+    # 1. Search for inactive accounts.
     $inactiveUsers = Search-ADAccount -AccountInactive -TimeSpan ([System.TimeSpan]::FromDays($inactiveDays)) -UsersOnly -ResultPageSize 0
     
     if ($null -ne $inactiveUsers) {
-        # 2. Lựa chọn các thuộc tính cần thiết và định dạng lại cột OU.
+        # 2. Select the required properties and format the OU column.
         $reportData = $inactiveUsers | Select-Object Name, SamAccountName, LastLogonDate, @{
             Name       = 'OrganizationalUnit'
-            Expression = { ($_.DistinguishedName -split ',', 2)[1] }
+            Expression = { ($_.DistinguishedName -split ',', 2) }
         }
 
-        # 3. Xuất kết quả đã được định dạng ra file CSV.
+        # 3. Export the formatted results to a CSV file.
         $reportData | Export-Csv -Path $reportPath -NoTypeInformation -Encoding UTF8
 
-        Write-Host "Hoan tat! Bao cao da duoc luu tai:" -ForegroundColor Green
+        Write-Host "Complete! The report has been saved to:" -ForegroundColor Green
         Write-Host $reportPath -ForegroundColor Yellow
     }
     else {
-        Write-Host "Khong tim thay tai khoan nao khong hoat dong trong $inactiveDays ngay qua." -ForegroundColor Green
+        Write-Host "No inactive accounts found within the last $inactiveDays days." -ForegroundColor Green
     }
 }
 catch {
-    Write-Error "Da xay ra loi: $_"
+    Write-Error "An error occurred: $_"
 }
 
-Write-Host "--- KET THUC SCRIPT ---" -ForegroundColor Cyan ```
+Write-Host "--- SCRIPT FINISHED ---" -ForegroundColor Cyan
+```
+### ⚡ Execution Guide
+1.  Run PowerShell as an Administrator.
+2.  Navigate to the script's directory: `cd C:\_MinhTam`
+3.  Execute the script: `.\Find-InactiveUsers.ps1`
 
-#⚡ Hướng dẫn thực thi
-Mở PowerShell với quyền Administrator.
-Điều hướng tới thư mục script: cd C:\MinhTam\Scripts
-Chạy lệnh: .\Find-InactiveUsers.ps1
+### ✅ Validation Results
 
-# Kết quả kỳ vọng
-PowerShell thông báo hoàn tất và chỉ đường dẫn tới file báo cáo.
-Một file báo cáo có tên Inactive_Users_Report_YYYY-MM-DD.csv được tạo trong C:\MinhTam\Reports.
-File báo cáo chứa các thông tin quan trọng: Name, SamAccountName, LastLogonDate, và OrganizationalUnit.
-[Ảnh chụp màn hình PowerShell thông báo đã xuất báo cáo thành công]
-[Ảnh chụp màn hình file CSV kết quả mở bằng Excel]
+The script provides two clear outputs upon successful execution.
+
+#### 1. PowerShell Console Output
+The console confirms that the process has completed and provides the full path to the newly created report file.
+
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/Script_Find-InactiveUsers/report_create.png" alt="PowerShell output showing a successful report creation" width="900" />
+
+---
+
+#### 2. Generated CSV Report
+The exported CSV file provides a clean, actionable list of all inactive users, including their full name, login name, last logon date, and their location (OU) within Active Directory.
+
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/Script_Find-InactiveUsers/result.png" alt="The final CSV report opened in Excel" width="900" />
