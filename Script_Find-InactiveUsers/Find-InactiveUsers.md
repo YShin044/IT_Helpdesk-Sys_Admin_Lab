@@ -7,7 +7,7 @@ To perform a periodic security audit by automatically scanning for and identifyi
 -   The script must be run on a Domain Controller or a machine with the Active Directory PowerShell Module installed.
 -   The `C:\_MinhTam\Reports` directory will be created automatically if it does not already exist.
 
-### 📜 Script Content
+### 📜 Script
 ```powershell
 <#
 .SYNOPSIS
