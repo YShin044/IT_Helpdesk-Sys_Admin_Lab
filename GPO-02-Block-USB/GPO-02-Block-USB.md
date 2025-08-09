@@ -1,18 +1,20 @@
-# 📄 Tài liệu GPO: Corp - Block USB Devices
+# 📄 GPO-02 Documentation: Corp - Block USB Devices
 
-### 🎯 Mục tiêu
-Giảm thiểu rủi ro thất thoát dữ liệu và lây nhiễm mã độc bằng cách vô hiệu hóa quyền truy cập vào các thiết bị lưu trữ USB trên tất cả máy trạm của **Công ty MinhTam**.
+### 🎯 Objective
+To mitigate the risk of data leakage and malware infection by disabling access to USB storage devices on all workstations within **MinhTam Company**.
 
-### ⚙️ Chi tiết cấu hình
--   **Đối tượng áp dụng:** Liên kết tới OU `MinhTam/Company/Computers`.
-<img src="" width="800" />
+### ⚙️ Configuration Details
+-   **Scope of Application:** Linked to the `MinhTam/Company/Computers` OU.
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-02-Block-USB/Link_to_Computers.png" alt="GPO linked to the Computers OU" width="800" />
 
--   **Chính sách:** `All Removable Storage classes: Deny all access` được đặt thành `Enabled`.
-> **Đường dẫn:** `Computer Configuration\Policies\Administrative Templates\System\Removable Storage Access`
-<img src="https://github.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/blob/master/GPO-02-Block-USB/deny-all-access_Policy.png" width="800" />
+-   **Policy:** `All Removable Storage classes: Deny all access` is set to `Enabled`.
+> **Path:** `Computer Configuration\Policies\Administrative Templates\System\Removable Storage Access`
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-02-Block-USB/deny-all-access_Policy.png" alt="Deny all access policy enabled" width="800" />
 
-### Kết quả xác thực
--   **Trước khi áp dụng:** USB được nhận và có thể truy cập dữ liệu.
-<img src="https://github.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/blob/master/GPO-02-Block-USB/Before.png" width="900" />
--   **Sau khi áp dụng:** Khi truy cập USB, hệ thống hiển thị lỗi "Access is denied".
-<img src="https://github.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/blob/master/GPO-02-Block-USB/After.png" width="900" />
+### Validation Results
+The policy was tested by attempting to access a USB drive before and after the GPO was applied.
+
+| Before Applying GPO | After Applying GPO |
+| :---: | :---: |
+| *The USB drive is detected and fully accessible.* | *The system blocks access, showing an "Access is denied" error.* |
+| <img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-02-Block-USB/Before.png" alt="USB drive accessible before policy" width="450" /> | <img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-02-Block-USB/After.png" alt="Access denied error after policy" width="450" /> |
