@@ -18,4 +18,5 @@ To automate the installation of Python across all new and existing workstations,
 ### ✅ Validation Results
 -   **Action:** A workstation within the target OU was restarted.
 -   **Result:** After the user logged in, **Python (including IDLE)** was successfully installed and available for use in the Start Menu.
+<img src="https://github.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/blob/master/GPO-03-Deploy-Software/Install.png" alt="Python installing" width="800" />
 <img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-03-Deploy-Software/update.png" alt="Python successfully installed and visible in the Start Menu" width="800" />
