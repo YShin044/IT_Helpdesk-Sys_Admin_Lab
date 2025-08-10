@@ -25,8 +25,30 @@ This project was designed to move beyond theory and apply system administration 
 ## 🚀 Implemented Solutions
 
 ### 1. Foundational Design: Active Directory Structure
-The default AD structure was replaced with a custom, multi-tiered Organizational Unit (OU) design. This logical hierarchy is optimized for granular permission delegation and targeted GPO application.
-<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/AD_Structure.png" alt="Custom Active Directory OU Structure" width="700" />
+The default AD structure was replaced with a custom, multi-tiered Organizational Unit (OU) design. This logical hierarchy is optimized for granular permission delegation and targeted GPO application, reflecting best practices for enterprise environments.
+
+```text
+📁 _MinhTam Company
+├── 🏢 Company
+│   ├── 💻 Computers
+│   │   ├── 🖥️ Desktops
+│   │   └── 💻 Laptops
+│   └── 👨‍👩‍👧‍👦 Users
+│       ├── 👑 01_BanGiamDoc
+│       ├── 📈 02_PhongKinhDoanh
+│       ├── 🧾 03_PhongKeToan
+│       ├── 📣 04_PhongMarketing
+│       ├── 🛠️ 05_PhongIT
+│       └── 🚫 DisabledUsers
+├── 👤 _AdminAccounts
+├── 👥 _Groups
+│   ├── 📧 Distribution Groups
+│   │   └── DL_All_Staff... (Email lists for departments)
+│   └── 🔒 Security Groups
+│       ├── SG_Block_USB... (For policy enforcement)
+│       └── SG_KinhDoanh_Share... (For resource permissions)
+└── ⚙️ _ServiceAccounts
+```
 
 ### 2. Centralized Management: Policy Enforcement via GPO
 Group Policy was leveraged as the primary tool to enforce security standards and deploy configurations across the organization.
