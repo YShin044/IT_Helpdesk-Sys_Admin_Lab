@@ -1,36 +1,38 @@
-# 📄 Tài liệu GPO: Corp - Set Default Language
+# 📄 GPO-05 Documentation: Corp - Set Default Language
 
-### 🎯 Mục tiêu
-Chuẩn hóa ngôn ngữ nhập liệu (bàn phím) mặc định cho tất cả người dùng trong **Công ty MinhTam** thành **English (United States)**. Việc này giải quyết vấn đề các máy tính mới cài đặt Windows có thể mặc định là English (United Kingdom), gây ra sự khác biệt trong layout bàn phím và trải nghiệm người dùng.
+### 🎯 Objective
+To standardize the default input language for all users within **MinhTam Company** to **English (United States)**. This policy resolves user experience issues, such as incorrect keyboard layouts, that arise from system defaults like English (United Kingdom).
 
-### 💡 Phương pháp tiếp cận
-Sử dụng **Group Policy Preferences (GPP)** để trực tiếp chỉnh sửa Registry của người dùng khi họ đăng nhập. Đây là phương pháp hiệu quả và đáng tin cậy nhất để ghi đè các cài đặt mặc định của hệ thống.
+### 💡 Technical Approach
+This policy leverages **Group Policy Preferences (GPP)** to directly modify the user's registry upon login. This is the most reliable method for enforcing a specific setting and overriding any pre-existing user or system defaults.
 
--   **Mã ngôn ngữ cho English (United States):** `00000409`
--   **Mã ngôn ngữ cho English (United Kingdom):** `00000809`
+-   **Code for English (United States):** `00000409`
+-   **Code for English (United Kingdom):** `00000809`
 
-### ⚙️ Chi tiết cấu hình
-1.  **Tạo và liên kết GPO:** GPO được liên kết tới OU `MinhTam/Company/Users`.
-    *   `[Ảnh chụp màn hình GPM, cho thấy GPO được link vào OU Users]`
+### ⚙️ Configuration Details
 
-2.  **Cấu hình Registry qua GPP:**
-    > **Đường dẫn:** `User Configuration -> Preferences -> Windows Settings -> Registry`
+**1. GPO Linking & Scope:**
+The GPO is linked to the `_MinhTam Company/Company/Users` OU to apply to all user accounts.
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-05-Set-Default-Language/Link_OU_Users.png" alt="GPO linked to the Users OU" width="800" />
 
-    **Hành động 1: Dọn dẹp (Delete)**
-    *   Tạo một Registry Item để xóa toàn bộ các giá trị trong key `Keyboard Layout\Preload` nhằm đảm bảo một môi trường sạch sẽ.
-    *   `[Ảnh chụp màn hình cửa sổ cấu hình Registry cho hành động Delete]`
+**2. GPP Registry Configuration:**
+> **Path:** `User Configuration -> Preferences -> Windows Settings -> Registry`
 
-    **Hành động 2: Thiết lập mặc định (Update)**
-    *   Tạo một Registry Item thứ hai để thiết lập giá trị `1` (mặc định) thành `00000409`.
-    *   `[Ảnh chụp màn hình cửa sổ cấu hình Registry cho hành động Update]`
+**Action 1: Cleanup (Delete)**
+*   A Registry Item is configured to delete all existing values under the `Keyboard Layout\Preload` key. This ensures a clean slate before applying the new default.
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-05-Set-Default-Language/RegistryItem_Delete.png" alt="Registry Item configured to Delete" width="600" />
 
-### Kết quả xác thực
-Hành động được xác thực bằng cách so sánh trạng thái của máy trạm trước và sau khi áp dụng chính sách.
+**Action 2: Set Default (Update)**
+*   A second Registry Item is created to set the value `1` (for default) to `00000409`.
+<img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-05-Set-Default-Language/RegistryItem_Create.png" alt="Registry Item configured to Create/Update" width="600" />
 
-| Trước khi áp dụng GPO | Sau khi áp dụng GPO |
+### Validation Results
+The policy was validated by comparing a workstation's state before and after the GPO was applied.
+
+| Before Applying GPO | After Applying GPO |
 | :---: | :---: |
-| *Thanh ngôn ngữ mặc định là 'ENG UK'* | *Thanh ngôn ngữ đã được chuẩn hóa thành 'ENG US'* |
-| <img src="đường/dẫn/tới/ảnh/trước.png" alt="Taskbar hiển thị ENG UK" width="350" /> | <img src="đường/dẫn/tới/ảnh/sau.png" alt="Taskbar hiển thị ENG US" width="350" /> |
+| *The taskbar shows the default 'ENG UK' input.* | *The taskbar now correctly shows 'ENG US' as the default.* |
+| <img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-05-Set-Default-Language/Before.png" alt="Taskbar showing ENG UK input method before policy" width="450" /> | <img src="https://raw.githubusercontent.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/master/GPO-05-Set-Default-Language/After.png" alt="Taskbar showing ENG US input method after policy" width="450" /> |
 
-### ⭐ Mẹo chuyên nghiệp
-Phương pháp này rất linh hoạt. Để thêm một ngôn ngữ thứ hai (ví dụ: Tiếng Việt) mà không làm nó trở thành mặc định, bạn chỉ cần tạo thêm một Registry Item với `Value name` là `2` và `Value data` là `0000042a`.
+### ⭐ Tip
+This GPP method is highly flexible. To add a secondary language (e.g., Vietnamese) without making it the default, simply create another Registry Item with the `Value name` set to `2` and the `Value data` set to its corresponding code (`0000042a`).
