@@ -37,6 +37,7 @@ Group Policy was leveraged as the primary tool to enforce security standards and
 | ⛔ | **Corp - Block USB Devices** | Mitigated data leakage and malware risks by disabling removable storage devices. | [View Docs](./GPO-02-Block-USB/GPO-02-Block-USB.md) |
 | 📦 | **Corp - Deploy Python-3.4.3** | Automated the deployment of essential software (Python) to all workstations. | [View Docs](./GPO-03-Deploy-Software/GPO-03-Deploy-Software.md) |
 | 🔗 | **KinhDoanh - Map Drive S** | Provided seamless access to departmental data by auto-mapping a network drive. | [View Docs](./GPO-04-Map-Network-Drive/GPO-04-Map-Network-Drive.md) |
+| 🌐 | **Corp - Set Default Language** | Chuẩn hóa ngôn ngữ nhập liệu mặc định (US English). | [Xem tài liệu](./GPO-05-Set-Default-Language/GPO-05-Set-Default-Language.md) |
 
 ### 3. Efficiency & Automation: The Power of PowerShell
 Scripts were developed to solve time-consuming and error-prone administrative tasks.
@@ -56,7 +57,7 @@ Scripts were developed to solve time-consuming and error-prone administrative ta
 ---
 
 ## 🛠️ Technology & Skills Stack
--   **Operating Systems:** Windows Server 2019, Windows 10
+-   **Operating Systems:** Windows Server 2019, Windows 10/11
 -   **Core Services:** Active Directory Domain Services (AD DS), DNS
 -   **Administration Tools:** Group Policy Management Console, PowerShell ISE
 -   **Scripting Language:** **PowerShell 5.1**
