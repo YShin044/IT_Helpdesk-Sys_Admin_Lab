@@ -79,13 +79,23 @@ Scripts were developed to solve time-consuming and error-prone administrative ta
     >
     > 📄 **View Script & Guide:** [`/Script_Find-InactiveUsers/Find-InactiveUsers.md`](./Script_Find-InactiveUsers/Find-InactiveUsers.md)
 
+### 4. Helpdesk Scenarios
+
+To transform this lab into a dynamic, hands-on environment, I have documented common Helpdesk issues following standard operating procedures. Each scenario is logged as a realistic support ticket.
+
+*   **TICKET-001: User Cannot Write to a Shared Drive**<br>[ `Tiếng Việt`](./_scenarios_Ticket/Vietnamese/TICKET-001_Permission_Denied.md) | [ `English` ](./_scenarios_Ticket/English/TICKET-001_Permission_Denied.md)
+
+*   **TICKET-002: User Account Locked Out**<br>[ `Tiếng Việt`](./_scenarios_Ticket/Vietnamese/TICKET-002_Account_Locked_Out.md) | [ `English` ](./_scenarios_Ticket/English/TICKET-002_Account_Locked_Out.md)
+
+*   **TICKET-003: New Employee Onboarding Process**<br>[ `Tiếng Việt`](./_scenarios_Ticket/Vietnamese/TICKET-003_New_Employee_Onboarding.md) | [ `English` ](./_scenarios_Ticket/English/TICKET-003_New_Employee_Onboarding.md)
+
 ---
 
 ## 🛠️ Technology & Skills Stack
 -   **Operating Systems:** Windows Server 2019, Windows 10/11
 -   **Core Services:** Active Directory Domain Services (AD DS), DNS
 -   **Administration Tools:** Group Policy Management Console, PowerShell ISE
--   **Scripting Language:** **PowerShell 5.1**
+-   **Scripting Language:** PowerShell 5.1
 -   **Professional Skills:** Technical Writing, Problem Solving, Process Automation, System Design
 
 ---
