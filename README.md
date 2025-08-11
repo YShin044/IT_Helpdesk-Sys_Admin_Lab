@@ -9,6 +9,9 @@ A hands-on lab environment simulating the IT infrastructure of **MinhTam Company
 ---
 
 ## 📖 Project Overview
+<p align="center">
+<img src="https://github.com/YShin044/IT_Helpdesk-Sys_Admin_Lab/blob/master/Lab_Topology.png" alt="Topology" width="600" />
+</p>
 
 This project was designed to move beyond theory and apply system administration principles in a practical setting. The core of the lab is a fully functional Active Directory environment where various policies and automation scripts have been deployed to enhance security, standardize user environments, and improve administrative efficiency.
 
@@ -59,7 +62,7 @@ Group Policy was leveraged as the primary tool to enforce security standards and
 | ⛔ | **Corp - Block USB Devices** | Mitigated data leakage and malware risks by disabling removable storage devices. | [View Docs](./GPO-02-Block-USB/GPO-02-Block-USB.md) |
 | 📦 | **Corp - Deploy Python-3.4.3** | Automated the deployment of essential software (Python) to all workstations. | [View Docs](./GPO-03-Deploy-Software/GPO-03-Deploy-Software.md) |
 | 🔗 | **KinhDoanh - Map Drive S** | Provided seamless access to departmental data by auto-mapping a network drive. | [View Docs](./GPO-04-Map-Network-Drive/GPO-04-Map-Network-Drive.md) |
-| 🌐 | **Corp - Set Default Language** | Chuẩn hóa ngôn ngữ nhập liệu mặc định (US English). | [View Docs](./GPO-05-Set-Default-Language/GPO-05-Set-Default-Language.md) |
+| 🌐 | **Corp - Set Default Language** | Ensures a consistent user experience by setting the default input method to English (US). | [View Docs](./GPO-05-Set-Default-Language/GPO-05-Set-Default-Language.md) |
 
 ### 3. Efficiency & Automation: The Power of PowerShell
 Scripts were developed to solve time-consuming and error-prone administrative tasks.
@@ -88,10 +91,14 @@ Scripts were developed to solve time-consuming and error-prone administrative ta
 ---
 
 ## 🌱 Future Development Roadmap
--   [ ] **File Server & NTFS Permissions:** Implement a dedicated file server with granular, role-based access controls.
--   [ ] **DHCP Server:** Deploy and manage a centralized DHCP service for the network.
--   [ ] **Windows Server Update Services (WSUS):** Centrally manage and deploy Windows updates to all clients.
--   [ ] **Automated Off-boarding Script:** Develop a comprehensive script to fully automate the employee departure process (disable account, archive data, remove group memberships).
+
+This project serves as a solid foundation. The next logical steps to evolve this lab into a more comprehensive enterprise environment include:
+
+-   [ ] **Implement Core Network Services:** Deploy and manage a centralized DHCP server to handle IP address allocation and a WSUS server to control the deployment of Windows updates to all clients.
+-   [x] **File Server & Granular Permissions:** Establish a dedicated File Server, create departmental shares, and apply granular NTFS permissions to enforce role-based access control (RBAC).
+-   [ ] **Automate the Full Employee Lifecycle:** Develop a comprehensive PowerShell Off-boarding script to handle employee departures, including disabling the account, archiving data, removing group memberships, and converting the mailbox.
+-   [ ] **Establish Hybrid Identity:** Integrate the on-premises Active Directory with Azure Active Directory using Azure AD Connect, enabling a foundational hybrid cloud environment and preparing for modern management.
+-   [ ] **Advanced Security Policies:** Implement more advanced GPOs, such as Folder Redirection for user profiles and AppLocker to restrict unauthorized software execution.
 
 ---
 
